@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MM2 Trading Hub FINAL</title>
+
+<style>
+body{margin:0;font-family:Arial;background:#0b0b12;color:#fff}
+header{text-align:center;padding:20px;background:#141428}
+.container{max-width:1100px;margin:auto;padding:20px}
+
+.topbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+input,select{padding:10px;border:none;border-radius:8px;background:#1b1b2a;color:#fff}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{background:#1b1b2a;padding:15px;border-radius:12px;transition:.2s}
+.card:hover{transform:translateY(-4px)}
+
+.img{height:120px;background-size:contain;background-repeat:no-repeat;background-position:center;margin-bottom:10px}
+
+.btn{display:inline-block;margin-top:8px;padding:6px 10px;background:#6c5ce7;border-radius:8px;font-size:12px;cursor:pointer}
+
+.r-godly{box-shadow:0 0 10px #a855f7}
+.r-chroma{box-shadow:0 0 10px #38bdf8}
+.r-ancient{box-shadow:0 0 10px #fb7185}
+.r-vintage{box-shadow:0 0 10px #9ca3af}
+
+.panel{margin-top:25px;background:#141428;padding:15px;border-radius:12px}
+.feed{font-size:13px;color:#ccc}
+</style>
+</head>
+
+<body>
+<header>
+<h1>MM2 Trading Hub</h1>
+<p>TikTok: @peachyhalo.shop</p>
+</header>
+
+<div class="container">
+
+<div class="topbar">
+<input id="search" placeholder="Search item..." oninput="render()">
+<select id="filter" onchange="render()">
+<option value="all">All</option>
+<option value="godly">Godly</option>
+<option value="ancient">Ancient</option>
+<option value="chroma">Chroma</option>
+<option value="vintage">Vintage</option>
+</select>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="panel">
+<h3>📩 Live Trades</h3>
+<div class="feed" id="feed"></div>
+</div>
+
+</div>
+
+<script>
+
+let items=[
+{name:"Heartblade",cat:"godly",value:"120",rar:"godly",img:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/0c/Heartblade.png"},
+{name:"Fang",cat:"godly",value:"55",rar:"godly",img:"https://static.wikia.nocookie.net/murder-mystery-2/images/5/58/Fang.png"},
+{name:"Icepiercer",cat:"godly",value:"150",rar:"godly",img:"https://static.wikia.nocookie.net/murder-mystery-2/images/9/9a/Icepiercer.png"},
+{name:"Minty",cat:"godly",value:"35",rar:"godly",img:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/02/Minty.png"},
+{name:"Spider",cat:"godly",value:"60",rar:"godly",img:"https://static.wikia.nocookie.net/murder-mystery-2/images/7/7b/Spider.png"},
+{name:"Chroma Seer",cat:"chroma",value:"90",rar:"chroma",img:"https://static.wikia.nocookie.net/murder-mystery-2/images/3/3f/Chroma_Seer.png"},
+{name:"Eternal III",cat:"ancient",value:"110",rar:"ancient",img:"https://static.wikia.nocookie.net/murder-mystery-2/images/5/5e/Eternal_III.png"},
+{name:"America",cat:"vintage",value:"40",rar:"vintage",img:"https://static.wikia.nocookie.net/murder-mystery-2/images/8/8e/America.png"}
+];
+
+let feed=[
+"Someone offered Fang for Heartblade",
+"Trade request: Chroma Seer",
+"Spider traded successfully"
+];
+
+function render(){
+let g=document.getElementById("grid");
+let s=document.getElementById("search").value.toLowerCase();
+let f=document.getElementById("filter").value;
+
+g.innerHTML="";
+
+items
+.filter(i=>(f=="all"||i.cat==f)&&i.name.toLowerCase().includes(s))
+.forEach(i=>{
+
+g.innerHTML+=`
+<div class="card r-${i.rar}">
+<div class="img" style="background-image:url('${i.img}')"></div>
+<h3>${i.name}</h3>
+<p>${i.cat}</p>
+<p>Value: ${i.value}</p>
+<div class="btn" onclick="copy('${i.name}')">Copy</div>
+</div>
+`;
+
+});
+
+document.getElementById("feed").innerHTML=feed.map(f=>"• "+f).join("<br>");
+}
+
+function copy(t){
+navigator.clipboard.writeText(t);
+alert("Copied: "+t);
+}
+
+setInterval(()=>{
+let names=["Heartblade","Fang","Spider","Chroma Seer"];
+feed.unshift("User offered "+names[Math.floor(Math.random()*4)]);
+feed=feed.slice(0,5);
+render();
+},4000);
+
+render();
+
+</script>
+
+</body>
+</html>
